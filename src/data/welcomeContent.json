@@ -1,0 +1,29 @@
+{
+  "title": "Welcome to Signature Card Management",
+  "subtitle": "Manage authorized signers on your business accounts quickly and securely — all online.",
+  "processSteps": [
+    {
+      "icon": "identity",
+      "title": "Verify Your Identity",
+      "description": "Log in with your credentials and confirm your identity through a one-time passcode sent to your registered contact method."
+    },
+    {
+      "icon": "account",
+      "title": "Select an Account",
+      "description": "Choose the business account you'd like to update from your list of eligible accounts."
+    },
+    {
+      "icon": "signers",
+      "title": "Manage Signers",
+      "description": "Add, edit, or remove authorized signers on the selected account. Review signer details and roles before submitting."
+    },
+    {
+      "icon": "review",
+      "title": "Review & Submit",
+      "description": "Confirm all changes and submit your updated signature card for processing. You'll receive a confirmation once complete."
+    }
+  ],
+  "estimatedTime": "This process typically takes 5–10 minutes to complete.",
+  "legalDisclaimer": "By proceeding, you acknowledge that you are an authorized controlling party for the account(s) you intend to manage. All changes to authorized signers are subject to review and approval by the financial institution. Submitting false or misleading information may result in account restrictions and potential legal action. Please ensure all signer information is accurate and up to date before submitting.",
+  "ctaButtonText": "Get Started"
+}

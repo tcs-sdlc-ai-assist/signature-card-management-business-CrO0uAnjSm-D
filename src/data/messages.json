@@ -1,0 +1,215 @@
+{
+  "unlock": {
+    "attempts": {
+      "1": {
+        "title": "Account Unlock Attempt 1 of 3",
+        "message": "A one-time passcode has been sent to your registered contact method. Please enter it below to unlock your account.",
+        "severity": "warning"
+      },
+      "2": {
+        "title": "Account Unlock Attempt 2 of 3",
+        "message": "Your previous unlock attempt was unsuccessful. Please try again with the new passcode sent to your registered contact method.",
+        "severity": "warning"
+      },
+      "3": {
+        "title": "Final Account Unlock Attempt",
+        "message": "This is your last attempt to unlock your account today. If this attempt fails, your account will remain locked until tomorrow.",
+        "severity": "critical"
+      }
+    },
+    "exhausted": {
+      "title": "Account Unlock Unavailable",
+      "message": "You have exceeded the maximum number of unlock attempts for today. Please try again tomorrow or contact customer support for assistance.",
+      "severity": "critical"
+    },
+    "success": {
+      "title": "Account Unlocked",
+      "message": "Your account has been successfully unlocked. You may now proceed.",
+      "severity": "success"
+    }
+  },
+  "resend": {
+    "attempts": {
+      "1": {
+        "title": "Passcode Resent (1 of 3)",
+        "message": "A new one-time passcode has been sent to your registered contact method. Please allow a moment for delivery.",
+        "severity": "success"
+      },
+      "2": {
+        "title": "Passcode Resent (2 of 3)",
+        "message": "A new one-time passcode has been sent. You have 1 resend attempt remaining.",
+        "severity": "warning"
+      },
+      "3": {
+        "title": "Final Passcode Resent",
+        "message": "A new one-time passcode has been sent. This was your last available resend. Please check your registered contact method.",
+        "severity": "warning"
+      }
+    },
+    "exhausted": {
+      "title": "Resend Limit Reached",
+      "message": "You have used all available passcode resend attempts for today. Please try again tomorrow or contact customer support for assistance.",
+      "severity": "critical"
+    },
+    "success": {
+      "title": "Passcode Sent",
+      "message": "A new one-time passcode has been sent to your registered contact method.",
+      "severity": "success"
+    }
+  },
+  "errors": {
+    "invalidCredentials": {
+      "title": "Invalid Credentials",
+      "message": "The username or password you entered is incorrect. Please try again."
+    },
+    "accountLocked": {
+      "title": "Account Locked",
+      "message": "Your account has been locked due to too many failed login attempts. Please use the unlock option or contact customer support."
+    },
+    "invalidOtp": {
+      "title": "Invalid Passcode",
+      "message": "The one-time passcode you entered is incorrect. Please check and try again."
+    },
+    "expiredOtp": {
+      "title": "Passcode Expired",
+      "message": "Your one-time passcode has expired. Please request a new one."
+    },
+    "otpAttemptsExhausted": {
+      "title": "Too Many Failed Attempts",
+      "message": "You have exceeded the maximum number of passcode verification attempts. Please request a new passcode or contact customer support."
+    },
+    "tokenExpired": {
+      "title": "Link Expired",
+      "message": "The link you used has expired. Please request a new invitation link to continue."
+    },
+    "tokenInvalid": {
+      "title": "Invalid Link",
+      "message": "The link you used is invalid or has already been used. Please contact the account owner to request a new invitation."
+    },
+    "networkError": {
+      "title": "Connection Error",
+      "message": "We were unable to connect to the server. Please check your internet connection and try again."
+    },
+    "serverError": {
+      "title": "Server Error",
+      "message": "An unexpected error occurred. Please try again later. If the problem persists, contact customer support."
+    },
+    "unauthorized": {
+      "title": "Unauthorized Access",
+      "message": "You are not authorized to perform this action. Please log in again."
+    },
+    "accountNotFound": {
+      "title": "Account Not Found",
+      "message": "The account you are looking for could not be found. Please verify the account information and try again."
+    },
+    "signerLimitReached": {
+      "title": "Signer Limit Reached",
+      "message": "The maximum number of authorized signers has been reached for this account. Please remove an existing signer before adding a new one."
+    },
+    "duplicateSigner": {
+      "title": "Duplicate Signer",
+      "message": "A signer with the same information already exists on this account. Please review the existing signers."
+    },
+    "submissionFailed": {
+      "title": "Submission Failed",
+      "message": "We were unable to submit your signature card changes. Please review your information and try again."
+    }
+  },
+  "success": {
+    "loginSuccess": {
+      "title": "Login Successful",
+      "message": "You have been successfully authenticated."
+    },
+    "otpVerified": {
+      "title": "Identity Verified",
+      "message": "Your identity has been successfully verified. You may now proceed."
+    },
+    "signerAdded": {
+      "title": "Signer Added",
+      "message": "The new authorized signer has been successfully added to the account."
+    },
+    "signerUpdated": {
+      "title": "Signer Updated",
+      "message": "The signer information has been successfully updated."
+    },
+    "signerRemoved": {
+      "title": "Signer Removed",
+      "message": "The signer has been successfully removed from the account."
+    },
+    "signatureCardSubmitted": {
+      "title": "Signature Card Submitted",
+      "message": "Your updated signature card has been submitted for processing. You will receive a confirmation once the changes have been reviewed and approved."
+    },
+    "invitationSent": {
+      "title": "Invitation Sent",
+      "message": "An invitation has been sent to the new signer at their registered contact method."
+    }
+  },
+  "session": {
+    "timeoutWarning": {
+      "title": "Session Expiring Soon",
+      "message": "Your session will expire in 2 minutes due to inactivity. Would you like to continue?",
+      "continueButtonText": "Continue Session",
+      "logoutButtonText": "Log Out"
+    },
+    "expired": {
+      "title": "Session Expired",
+      "message": "Your session has expired due to inactivity. Please log in again to continue.",
+      "severity": "warning"
+    },
+    "loggedOut": {
+      "title": "Logged Out",
+      "message": "You have been successfully logged out.",
+      "severity": "success"
+    }
+  },
+  "validation": {
+    "required": "{field} is required.",
+    "minLength": "{field} must be at least {min} characters.",
+    "maxLength": "{field} must not exceed {max} characters.",
+    "invalidEmail": "Please enter a valid email address.",
+    "invalidPhone": "Please enter a valid 10-digit phone number.",
+    "invalidSSN": "Please enter a valid 9-digit Social Security Number.",
+    "invalidFormat": "{field} format is invalid.",
+    "passwordRequirements": "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character.",
+    "otpFormat": "Please enter a valid 6-digit one-time passcode.",
+    "nameFormat": "Name may only contain letters, hyphens, apostrophes, and spaces.",
+    "selectionRequired": "Please select a {field} to continue.",
+    "confirmationRequired": "Please confirm your changes before submitting."
+  },
+  "confirmation": {
+    "removeSigner": {
+      "title": "Remove Signer",
+      "message": "Are you sure you want to remove {signerName} as an authorized signer on this account? This action cannot be undone.",
+      "confirmButtonText": "Remove Signer",
+      "cancelButtonText": "Cancel"
+    },
+    "submitChanges": {
+      "title": "Submit Signature Card Changes",
+      "message": "You are about to submit changes to the authorized signers on this account. Please review all changes carefully before proceeding.",
+      "confirmButtonText": "Submit Changes",
+      "cancelButtonText": "Go Back"
+    },
+    "cancelChanges": {
+      "title": "Discard Changes",
+      "message": "Are you sure you want to discard your changes? Any unsaved modifications will be lost.",
+      "confirmButtonText": "Discard Changes",
+      "cancelButtonText": "Keep Editing"
+    },
+    "logout": {
+      "title": "Log Out",
+      "message": "Are you sure you want to log out? Any unsaved changes will be lost.",
+      "confirmButtonText": "Log Out",
+      "cancelButtonText": "Cancel"
+    }
+  },
+  "login": {
+    "attemptsRemaining": {
+      "1": "Warning: You have 1 login attempt remaining before your account is locked.",
+      "2": "You have 2 login attempts remaining.",
+      "3": "You have 3 login attempts remaining.",
+      "4": "You have 4 login attempts remaining."
+    },
+    "locked": "Your account has been locked due to too many failed login attempts. Please use the unlock option or contact customer support."
+  }
+}

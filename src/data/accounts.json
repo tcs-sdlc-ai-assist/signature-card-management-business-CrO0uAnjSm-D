@@ -1,0 +1,56 @@
+[
+  {
+    "id": "ACCT-1001",
+    "name": "Smith Enterprise Checking",
+    "fullAccountNumber": "4532891001",
+    "maskedAccountNumber": "******1001",
+    "accountType": "checking",
+    "signerCount": 2,
+    "controllingPartyId": "USR-001"
+  },
+  {
+    "id": "ACCT-1002",
+    "name": "Smith Business Savings",
+    "fullAccountNumber": "4532891002",
+    "maskedAccountNumber": "******1002",
+    "accountType": "savings",
+    "signerCount": 1,
+    "controllingPartyId": "USR-001"
+  },
+  {
+    "id": "ACCT-1003",
+    "name": "Smith Money Market Reserve",
+    "fullAccountNumber": "4532891003",
+    "maskedAccountNumber": "******1003",
+    "accountType": "money market",
+    "signerCount": 3,
+    "controllingPartyId": "USR-001"
+  },
+  {
+    "id": "ACCT-2001",
+    "name": "Johnson Commercial Checking",
+    "fullAccountNumber": "7891232001",
+    "maskedAccountNumber": "******2001",
+    "accountType": "checking",
+    "signerCount": 1,
+    "controllingPartyId": "USR-002"
+  },
+  {
+    "id": "ACCT-3001",
+    "name": "Williams Group Checking",
+    "fullAccountNumber": "3216543001",
+    "maskedAccountNumber": "******3001",
+    "accountType": "checking",
+    "signerCount": 2,
+    "controllingPartyId": "USR-003"
+  },
+  {
+    "id": "ACCT-3002",
+    "name": "Williams Group Savings",
+    "fullAccountNumber": "3216543002",
+    "maskedAccountNumber": "******3002",
+    "accountType": "savings",
+    "signerCount": 1,
+    "controllingPartyId": "USR-003"
+  }
+]

@@ -1,0 +1,177 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-roboto text-body antialiased;
+    font-family: 'Roboto', sans-serif;
+    color: #292929;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .button-primary {
+    @apply inline-flex items-center justify-center rounded px-6 py-2.5 text-sm font-medium text-white transition-colors duration-200;
+    background-color: #00468b;
+  }
+
+  .button-primary:hover {
+    background-color: #003670;
+  }
+
+  .button-primary:focus {
+    @apply outline-none ring-2 ring-offset-2;
+    ring-color: #00468b;
+  }
+
+  .button-primary:disabled {
+    @apply cursor-not-allowed opacity-50;
+  }
+
+  .button-secondary-2 {
+    @apply inline-flex items-center justify-center rounded border px-6 py-2.5 text-sm font-medium transition-colors duration-200;
+    border-color: #00468b;
+    color: #00468b;
+    background-color: transparent;
+  }
+
+  .button-secondary-2:hover {
+    background-color: #00468b;
+    @apply text-white;
+  }
+
+  .button-secondary-2:focus {
+    @apply outline-none ring-2 ring-offset-2;
+    ring-color: #00468b;
+  }
+
+  .button-secondary-2:disabled {
+    @apply cursor-not-allowed opacity-50;
+  }
+
+  .hb-alert-critical {
+    @apply relative rounded border px-4 py-3 text-sm;
+    background-color: #fef2f2;
+    border-color: #fca5a5;
+    color: #991b1b;
+  }
+
+  .hb-alert-warning {
+    @apply relative rounded border px-4 py-3 text-sm;
+    background-color: #fffbeb;
+    border-color: #fcd34d;
+    color: #92400e;
+  }
+
+  .hb-alert-success {
+    @apply relative rounded border px-4 py-3 text-sm;
+    background-color: #f0fdf4;
+    border-color: #86efac;
+    color: #166534;
+  }
+
+  .hb-modal {
+    @apply fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black bg-opacity-50 p-4;
+  }
+
+  .hb-modal-dialog-centered {
+    @apply flex min-h-full items-center justify-center;
+  }
+
+  .hb-modal-dialog-centered > * {
+    @apply w-full max-w-lg rounded-lg bg-white p-6 shadow-xl;
+  }
+
+  .fluid-wrapper {
+    @apply mx-auto w-full px-4;
+    max-width: 1200px;
+  }
+
+  .hb-row {
+    @apply -mx-4 flex flex-wrap;
+  }
+
+  .hb-col-1 {
+    @apply w-full px-4;
+    max-width: 8.333333%;
+    flex: 0 0 8.333333%;
+  }
+
+  .hb-col-2 {
+    @apply w-full px-4;
+    max-width: 16.666667%;
+    flex: 0 0 16.666667%;
+  }
+
+  .hb-col-3 {
+    @apply w-full px-4;
+    max-width: 25%;
+    flex: 0 0 25%;
+  }
+
+  .hb-col-4 {
+    @apply w-full px-4;
+    max-width: 33.333333%;
+    flex: 0 0 33.333333%;
+  }
+
+  .hb-col-5 {
+    @apply w-full px-4;
+    max-width: 41.666667%;
+    flex: 0 0 41.666667%;
+  }
+
+  .hb-col-6 {
+    @apply w-full px-4;
+    max-width: 50%;
+    flex: 0 0 50%;
+  }
+
+  .hb-col-7 {
+    @apply w-full px-4;
+    max-width: 58.333333%;
+    flex: 0 0 58.333333%;
+  }
+
+  .hb-col-8 {
+    @apply w-full px-4;
+    max-width: 66.666667%;
+    flex: 0 0 66.666667%;
+  }
+
+  .hb-col-9 {
+    @apply w-full px-4;
+    max-width: 75%;
+    flex: 0 0 75%;
+  }
+
+  .hb-col-10 {
+    @apply w-full px-4;
+    max-width: 83.333333%;
+    flex: 0 0 83.333333%;
+  }
+
+  .hb-col-11 {
+    @apply w-full px-4;
+    max-width: 91.666667%;
+    flex: 0 0 91.666667%;
+  }
+
+  .hb-col-12 {
+    @apply w-full px-4;
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .invaliderr {
+    @apply mt-1 text-xs;
+    color: #dc2626;
+  }
+}

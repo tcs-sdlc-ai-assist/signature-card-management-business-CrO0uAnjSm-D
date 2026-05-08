@@ -1,0 +1,59 @@
+[
+  {
+    "id": "USR-001",
+    "username": "jsmith",
+    "password": "Password1!",
+    "profile": {
+      "firstName": "John",
+      "lastName": "Smith",
+      "email": "john.smith@example.com",
+      "emailMasked": "joh***@example.com",
+      "phone": "5551234567",
+      "phoneMasked": "******4567",
+      "ssn": "123456789",
+      "ssnMasked": "***-**-6789"
+    },
+    "accountIds": ["ACCT-1001", "ACCT-1002", "ACCT-1003"],
+    "status": "active",
+    "loginAttempts": 0,
+    "locked": false
+  },
+  {
+    "id": "USR-002",
+    "username": "mjohnson",
+    "password": "Secure2@",
+    "profile": {
+      "firstName": "Maria",
+      "lastName": "Johnson",
+      "email": "maria.johnson@example.com",
+      "emailMasked": "mar***@example.com",
+      "phone": "5559876543",
+      "phoneMasked": "******6543",
+      "ssn": "987654321",
+      "ssnMasked": "***-**-4321"
+    },
+    "accountIds": ["ACCT-2001"],
+    "status": "active",
+    "loginAttempts": 0,
+    "locked": false
+  },
+  {
+    "id": "USR-003",
+    "username": "bwilliams",
+    "password": "Test3#abc",
+    "profile": {
+      "firstName": "Brian",
+      "lastName": "Williams",
+      "email": "brian.williams@example.com",
+      "emailMasked": "bri***@example.com",
+      "phone": "5555551234",
+      "phoneMasked": "******1234",
+      "ssn": "456789123",
+      "ssnMasked": "***-**-9123"
+    },
+    "accountIds": ["ACCT-3001", "ACCT-3002"],
+    "status": "active",
+    "loginAttempts": 0,
+    "locked": false
+  }
+]
