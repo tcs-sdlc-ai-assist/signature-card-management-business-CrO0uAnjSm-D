@@ -182,27 +182,9 @@ function TokenValidationScreenContent() {
     setCanRetry(false);
 
     try {
-      const storedToken = getStoredToken();
-
-      if (!storedToken) {
-        logEvent(
-          userId,
-          AUDIT_EVENT_TYPES.TOKEN_INVALID,
-          { reason: 'No token found in storage' },
-          AUDIT_OUTCOMES.FAILURE
-        );
-
-        setErrorState({
-          title: messages.errors.tokenInvalid.title,
-          message: 'No invitation token was found. Please use a valid invitation link to access this application.',
-          status: 'invalid',
-        });
-        setCanRetry(false);
-        setValidating(false);
-        return;
-      }
-
       const result = await validateToken();
+      const storedToken = getStoredToken(); // Get it now that validateToken might have set it
+
 
       if (result.valid) {
         sessionValidateToken();

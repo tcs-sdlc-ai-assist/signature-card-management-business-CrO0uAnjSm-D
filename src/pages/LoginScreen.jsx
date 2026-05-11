@@ -6,7 +6,7 @@ import PageLayout from '@/components/PageLayout';
 import FormField from '@/components/FormField';
 import Button from '@/components/Button';
 import Alert from '@/components/Alert';
-import { isAccountLocked, getLoginAttempts } from '@/services/AuthService';
+import { isAccountLocked, getLoginAttempts, resetLoginAttempts } from '@/services/AuthService';
 import { logEvent, AUDIT_EVENT_TYPES, AUDIT_OUTCOMES } from '@/services/AuditService';
 import { RATE_LIMIT_CONFIG } from '@/utils/constants';
 import messages from '@/data/messages.json';
@@ -53,6 +53,26 @@ function LoginScreenContent() {
   const [serverError, setServerError] = useState(null);
   const [isLocked, setIsLocked] = useState(false);
   const [attemptsRemaining, setAttemptsRemaining] = useState(null);
+
+  /**
+   * Unlocks the account by resetting login attempts.
+   * Only for demo/testing purposes.
+   */
+  const handleUnlock = useCallback(() => {
+    const targetUser = username.trim() || 'maria.gonzalez@acmecorp.com';
+    resetLoginAttempts(targetUser);
+    setIsLocked(false);
+    setAttemptsRemaining(RATE_LIMIT_CONFIG.MAX_LOGIN_ATTEMPTS);
+    setServerError(null);
+    
+    logEvent(
+      targetUser,
+      AUDIT_EVENT_TYPES.OTP_VERIFIED, // Using closest event type for 'reset' action
+      { action: 'manual_unlock', username: targetUser },
+      AUDIT_OUTCOMES.SUCCESS
+    );
+  }, [username]);
+
 
   /**
    * Validates a single field and returns the error message or null.
@@ -254,7 +274,19 @@ function LoginScreenContent() {
         {isLocked && (
           <div className="mb-6">
             <Alert
-              message={messages.errors.accountLocked.message}
+              message={
+                <div>
+                  {messages.errors.accountLocked.message}
+                  <button 
+                    type="button"
+                    onClick={handleUnlock}
+                    className="block mt-2 text-sm font-bold underline hover:no-underline text-red-800 transition-colors duration-200"
+                    aria-label="Reset account for demo"
+                  >
+                    Reset Account (Demo Only)
+                  </button>
+                </div>
+              }
               title={messages.errors.accountLocked.title}
               variant="critical"
               ariaLabel="Account locked alert"
@@ -332,7 +364,7 @@ function LoginScreenContent() {
           </div>
         </form>
 
-        <div className="mt-4 text-center">
+        <div className="mt-4 text-center flex flex-col gap-2">
           <button
             type="button"
             className="text-sm text-primary-blue underline transition-colors duration-200 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-offset-2 rounded"
@@ -343,6 +375,11 @@ function LoginScreenContent() {
           >
             Forgot Password?
           </button>
+          <div className="mt-2 p-3 rounded bg-blue-50 border border-blue-100 text-xs text-gray-700" aria-label="Test credentials">
+            <div className="font-semibold mb-1 text-primary-blue">Test Login Credentials (for demo/testing):</div>
+            <div>Email: <span className="font-mono">maria.gonzalez@acmecorp.com</span></div>
+            <div>Password: <span className="font-mono">Password@123</span></div>
+          </div>
         </div>
       </div>
     </PageLayout>

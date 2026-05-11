@@ -21,7 +21,7 @@ import messages from '@/data/messages.json';
  * @returns {React.ReactElement}
  */
 function SubmissionConfirmationScreenContent() {
-  const { resetNavigation, completeStep } = useNavigation();
+  const { resetToStep, completeStep } = useNavigation();
   const { currentUser } = useSession();
   const { selectedAccount, stagedChanges, clearStagedChanges: clearAppStagedChanges, clearSelectedAccount } = useApp();
 
@@ -166,14 +166,14 @@ function SubmissionConfirmationScreenContent() {
 
   /**
    * Handles the Done button click.
-   * Clears all state and navigates back to the welcome screen.
+   * Clears staged state and navigates back to account selection.
    */
   const handleDone = useCallback(() => {
     clearStagedChanges();
     clearAppStagedChanges();
     clearSelectedAccount();
-    resetNavigation();
-  }, [clearAppStagedChanges, clearSelectedAccount, resetNavigation]);
+    resetToStep('accountSelection');
+  }, [clearAppStagedChanges, clearSelectedAccount, resetToStep]);
 
   /**
    * Handles the retry button click for failed submissions.

@@ -703,6 +703,11 @@ function IdentityVerificationScreenContent() {
             </div>
           </div>
         )}
+
+        <div className="mt-4 p-3 rounded bg-blue-50 border border-blue-100 text-xs text-gray-700" aria-label="Test OTP credentials">
+          <div className="font-semibold mb-1 text-primary-blue">Test OTP Code (for demo/testing):</div>
+          <div>OTP: <span className="font-mono">123456</span></div>
+        </div>
       </div>
     </PageLayout>
   );

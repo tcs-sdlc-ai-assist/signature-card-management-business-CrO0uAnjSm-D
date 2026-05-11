@@ -164,10 +164,12 @@ function AddSignerScreenContent() {
       showProgress={true}
       visibleSteps={['accountSelection', 'signerManagement', 'addEditSigner', 'confirmSigners', 'reviewSigners', 'submission']}
       showBackButton={true}
-      showContinueButton={false}
+      showContinueButton={addedCount > 0}
       showCancelButton={false}
       backButtonText="Back"
+      continueButtonText="Continue"
       onBack={handleBack}
+      onContinue={handleReturnToManagement}
       hasUnsavedChanges={addedCount > 0}
       showSessionTimeout={true}
       ariaLabel="Add authorized signer page"
@@ -244,17 +246,17 @@ function AddSignerScreenContent() {
             <div className="flex flex-col gap-3 tablet:flex-row">
               <Button
                 variant="primary"
+                onClick={handleReturnToManagement}
+                ariaLabel="Return to Signer Management"
+              >
+                Continue
+              </Button>
+              <Button
+                variant="secondary"
                 onClick={handleAddAnother}
                 ariaLabel="Add Another Signer"
               >
                 Add Another Signer
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={handleReturnToManagement}
-                ariaLabel="Return to Signer Management"
-              >
-                Return to Signer Management
               </Button>
             </div>
           </div>

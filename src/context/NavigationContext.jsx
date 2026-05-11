@@ -1,8 +1,26 @@
 import { createContext, useContext, useState, useCallback, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import { STEPS, STORAGE_KEYS } from '@/utils/constants';
 import { getFromLocalStorage, setToLocalStorage } from '@/utils/helpers';
 import { getSession, updateCurrentStep } from '@/services/SessionService';
+
+/**
+ * Maps workflow step names to their corresponding route paths.
+ * @type {Object<string, string>}
+ */
+const STEP_ROUTES = {
+  welcome: '/',
+  login: '/login',
+  verify: '/verify',
+  tokenValidation: '/validate-token',
+  accountSelection: '/select-account',
+  signerManagement: '/manage-signers',
+  addEditSigner: '/add-signer',
+  confirmSigners: '/confirm-signers',
+  reviewSigners: '/review-signers',
+  submission: '/submission-confirmation',
+};
 
 /**
  * @typedef {Object} NavigationState
@@ -83,6 +101,7 @@ function getInitialState() {
  * @returns {React.ReactElement}
  */
 export function NavigationProvider({ children }) {
+  const navigate = useNavigate();
   const initialState = useMemo(() => getInitialState(), []);
 
   const [currentStep, setCurrentStep] = useState(initialState.currentStep);
@@ -140,16 +159,25 @@ export function NavigationProvider({ children }) {
 
     if (targetIndex < currentIndex) {
       setCurrentStep(trimmedStep);
+      if (STEP_ROUTES[trimmedStep]) {
+        navigate(STEP_ROUTES[trimmedStep]);
+      }
       return true;
     }
 
     if (targetIndex === currentIndex + 1) {
       setCurrentStep(trimmedStep);
+      if (STEP_ROUTES[trimmedStep]) {
+        navigate(STEP_ROUTES[trimmedStep]);
+      }
       return true;
     }
 
     if (completedSteps.includes(trimmedStep)) {
       setCurrentStep(trimmedStep);
+      if (STEP_ROUTES[trimmedStep]) {
+        navigate(STEP_ROUTES[trimmedStep]);
+      }
       return true;
     }
 
@@ -159,11 +187,14 @@ export function NavigationProvider({ children }) {
 
     if (allPriorCompleted) {
       setCurrentStep(trimmedStep);
+      if (STEP_ROUTES[trimmedStep]) {
+        navigate(STEP_ROUTES[trimmedStep]);
+      }
       return true;
     }
 
     return false;
-  }, [currentStep, completedSteps]);
+  }, [currentStep, completedSteps, navigate]);
 
   /**
    * Navigates to the previous step in the workflow.
@@ -178,8 +209,11 @@ export function NavigationProvider({ children }) {
 
     const previousStep = STEPS[currentIndex - 1];
     setCurrentStep(previousStep);
+    if (STEP_ROUTES[previousStep]) {
+      navigate(STEP_ROUTES[previousStep]);
+    }
     return true;
-  }, [currentStep]);
+  }, [currentStep, navigate]);
 
   /**
    * Navigates to the next step in the workflow.
@@ -195,19 +229,40 @@ export function NavigationProvider({ children }) {
 
     const nextStep = STEPS[currentIndex + 1];
     setCurrentStep(nextStep);
+    if (STEP_ROUTES[nextStep]) {
+      navigate(STEP_ROUTES[nextStep]);
+    }
     return true;
-  }, [currentStep]);
+  }, [currentStep, navigate]);
+
+  /**
+   * Resets navigation to a specific step and clears any completed steps after it.
+   */
+  const resetToStep = useCallback((stepName) => {
+    if (!STEPS.includes(stepName)) return;
+    
+    const targetIndex = STEPS.indexOf(stepName);
+    setCurrentStep(stepName);
+    
+    // Keep only steps completed BEFORE the target step
+    setCompletedSteps((prev) => {
+      const newCompleted = prev.filter(s => STEPS.indexOf(s) < targetIndex);
+      persistNavigationState(stepName, newCompleted);
+      return newCompleted;
+    });
+    
+    updateCurrentStep(stepName);
+    if (STEP_ROUTES[stepName]) {
+      navigate(STEP_ROUTES[stepName]);
+    }
+  }, [navigate]);
 
   /**
    * Resets navigation to the initial welcome step and clears completed steps.
    */
   const resetNavigation = useCallback(() => {
-    const initialStep = STEPS[0];
-    setCurrentStep(initialStep);
-    setCompletedSteps([]);
-    persistNavigationState(initialStep, []);
-    updateCurrentStep(initialStep);
-  }, []);
+    resetToStep(STEPS[0]);
+  }, [resetToStep]);
 
   const canNavigateBack = currentStepIndex > 0;
   const canNavigateForward = currentStepIndex < STEPS.length - 1;
@@ -221,6 +276,7 @@ export function NavigationProvider({ children }) {
     goBack,
     goForward,
     resetNavigation,
+    resetToStep,
     completeStep,
     currentStepIndex,
     totalSteps,
@@ -233,6 +289,7 @@ export function NavigationProvider({ children }) {
     goBack,
     goForward,
     resetNavigation,
+    resetToStep,
     completeStep,
     currentStepIndex,
     totalSteps,

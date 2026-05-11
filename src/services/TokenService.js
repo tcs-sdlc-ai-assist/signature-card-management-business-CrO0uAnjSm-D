@@ -34,10 +34,16 @@ import { logEvent, AUDIT_EVENT_TYPES, AUDIT_OUTCOMES } from '@/services/AuditSer
 function getTokensData() {
   const stored = getFromLocalStorage('scm_tokens_data');
   if (Array.isArray(stored) && stored.length > 0) {
-    return stored;
+    // Verify stored data matches expected tokens to prevent stale cache issues
+    const expectedIds = tokens.map((t) => t.id);
+    const storedIds = stored.map((t) => t.id);
+    const idsMatch = expectedIds.every((id) => storedIds.includes(id));
+    if (idsMatch) {
+      return stored;
+    }
   }
   setToLocalStorage('scm_tokens_data', tokens);
-  return tokens;
+  return [...tokens];
 }
 
 /**
@@ -114,20 +120,31 @@ export async function validateToken() {
     };
   }
 
-  const storedToken = getFromLocalStorage(STORAGE_KEYS.AUTH_TOKEN);
+  let storedToken = getFromLocalStorage(STORAGE_KEYS.AUTH_TOKEN);
 
+  // For demo/MVP: auto-resolve a token for the current user if none was captured from URL
   if (!storedToken || typeof storedToken !== 'string' || storedToken.trim() === '') {
-    logEvent(
-      session.userId,
-      AUDIT_EVENT_TYPES.TOKEN_INVALID,
-      { reason: 'No token stored in session' },
-      AUDIT_OUTCOMES.FAILURE
+    const tokensData = getTokensData();
+    const autoToken = tokensData.find(
+      (t) => t.associatedUserId === session.userId && t.status !== 'expired'
     );
 
-    return {
-      valid: false,
-      error: 'No token found. Please use a valid invitation link to continue.',
-    };
+    if (autoToken && autoToken.token) {
+      storedToken = autoToken.token;
+      setToLocalStorage(STORAGE_KEYS.AUTH_TOKEN, storedToken);
+    } else {
+      logEvent(
+        session.userId,
+        AUDIT_EVENT_TYPES.TOKEN_INVALID,
+        { reason: 'No token stored in session' },
+        AUDIT_OUTCOMES.FAILURE
+      );
+
+      return {
+        valid: false,
+        error: 'No token found. Please use a valid invitation link to continue.',
+      };
+    }
   }
 
   const tokensData = getTokensData();
@@ -163,26 +180,36 @@ export async function validateToken() {
     };
   }
 
-  const createdAt = new Date(tokenRecord.createdAt);
   const now = new Date();
   const expiryMs = TOKEN_CONFIG.EXPIRY_HOURS * 60 * 60 * 1000;
 
-  if (isNaN(createdAt.getTime())) {
-    logEvent(
-      session.userId,
-      AUDIT_EVENT_TYPES.TOKEN_INVALID,
-      { reason: 'Invalid token creation date', tokenId: tokenRecord.id },
-      AUDIT_OUTCOMES.FAILURE
-    );
+  // Use explicit expiresAt from token data if available, otherwise compute from createdAt
+  let tokenExpired = false;
+  if (tokenRecord.expiresAt) {
+    const expiresAt = new Date(tokenRecord.expiresAt);
+    if (!isNaN(expiresAt.getTime())) {
+      tokenExpired = now.getTime() >= expiresAt.getTime();
+    }
+  } else {
+    const createdAt = new Date(tokenRecord.createdAt);
+    if (isNaN(createdAt.getTime())) {
+      logEvent(
+        session.userId,
+        AUDIT_EVENT_TYPES.TOKEN_INVALID,
+        { reason: 'Invalid token creation date', tokenId: tokenRecord.id },
+        AUDIT_OUTCOMES.FAILURE
+      );
 
-    return {
-      valid: false,
-      status: 'invalid',
-      error: 'The link you used is invalid. Please contact the account owner to request a new invitation.',
-    };
+      return {
+        valid: false,
+        status: 'invalid',
+        error: 'The link you used is invalid. Please contact the account owner to request a new invitation.',
+      };
+    }
+    tokenExpired = now.getTime() - createdAt.getTime() >= expiryMs;
   }
 
-  if (now.getTime() - createdAt.getTime() >= expiryMs) {
+  if (tokenExpired) {
     updateTokenStatus(storedToken, 'expired');
 
     logEvent(
@@ -219,7 +246,7 @@ export async function validateToken() {
     };
   }
 
-  const tokenExpiresAt = new Date(createdAt.getTime() + expiryMs);
+  const tokenExpiresAt = new Date(new Date(tokenRecord.createdAt).getTime() + expiryMs);
   setToLocalStorage(STORAGE_KEYS.TOKEN_EXPIRY, tokenExpiresAt.toISOString());
 
   session.isTokenValidated = true;

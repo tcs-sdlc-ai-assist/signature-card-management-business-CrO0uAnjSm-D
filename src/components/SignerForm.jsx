@@ -26,7 +26,9 @@ const TITLE_OPTIONS = [
   { value: 'Owner', label: 'Owner' },
   { value: 'Co-Owner', label: 'Co-Owner' },
   { value: 'CFO', label: 'CFO' },
+  { value: 'VP of Finance', label: 'VP of Finance' },
   { value: 'Controller', label: 'Controller' },
+  { value: 'Assistant Controller', label: 'Assistant Controller' },
   { value: 'Treasurer', label: 'Treasurer' },
   { value: 'Managing Partner', label: 'Managing Partner' },
   { value: 'Partner', label: 'Partner' },
@@ -111,6 +113,25 @@ function SignerForm({
     }
     return { ...DEFAULT_FORM_DATA };
   });
+
+  /**
+   * Syncs form data when initialData changes (e.g., async load in edit mode).
+   */
+  useEffect(() => {
+    if (initialData && typeof initialData === 'object') {
+      setFormData({
+        firstName: initialData.firstName || '',
+        lastName: initialData.lastName || '',
+        middleName: initialData.middleName || '',
+        suffix: initialData.suffix || '',
+        title: initialData.title || '',
+        role: initialData.role || '',
+        email: initialData.email || '',
+        phone: initialData.phone || '',
+        additionalContact: initialData.additionalContact || '',
+      });
+    }
+  }, [initialData]);
 
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});

@@ -57,8 +57,12 @@ function getSignersData() {
   if (Array.isArray(stored) && stored.length > 0) {
     return stored;
   }
-  setToLocalStorage(SIGNERS_DATA_KEY, signersMockData);
-  return [...signersMockData];
+  // First load or empty: initialize with mock data
+  if (!Array.isArray(stored)) {
+    setToLocalStorage(SIGNERS_DATA_KEY, signersMockData);
+    return [...signersMockData];
+  }
+  return stored;
 }
 
 /**

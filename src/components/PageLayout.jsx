@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { classNames } from '@/utils/helpers';
+import { useSession } from '@/context/SessionContext';
+import { useNavigation } from '@/context/NavigationContext';
 import ProgressIndicator from '@/components/ProgressIndicator';
 import Button from '@/components/Button';
 import ExitConfirmationModal from '@/components/ExitConfirmationModal';
@@ -72,9 +74,25 @@ function PageLayout({
   footerContent,
 }) {
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+  
+  // Extract context values safely handling potential errors if used outside provider
+  let sessionContext = null;
+  let navContext = null;
+  try { sessionContext = useSession(); } catch (e) { /* ignore */ }
+  try { navContext = useNavigation(); } catch (e) { /* ignore */ }
+
+  const currentUser = sessionContext?.currentUser;
+  const isAuthenticated = sessionContext?.isAuthenticated;
+  const logout = sessionContext?.logout;
+  const resetNavigation = navContext?.resetNavigation;
 
   const hasFooterButtons = showBackButton || showContinueButton || showCancelButton;
   const shouldShowFooter = showFooter !== undefined ? showFooter : (hasFooterButtons || !!footerContent);
+
+  const handleLogout = useCallback(() => {
+    if (logout) logout();
+    if (resetNavigation) resetNavigation();
+  }, [logout, resetNavigation]);
 
   /**
    * Handles the Cancel button click.
@@ -145,6 +163,28 @@ function PageLayout({
 
   return (
     <div className="fluid-wrapper py-6">
+      {isAuthenticated && currentUser && (
+        <div className="mb-6 flex items-center justify-end">
+          <div className="flex items-center gap-4 rounded border border-gray-200 bg-white px-4 py-2 shadow-sm">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-primary-blue">
+                {currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U'}
+              </div>
+              <span className="text-sm font-medium text-body">{currentUser.username}</span>
+            </div>
+            <div className="h-4 w-px bg-gray-300" aria-hidden="true"></div>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="text-sm font-medium text-primary-blue hover:text-blue-800 focus:outline-none focus:underline"
+              aria-label="Log out"
+            >
+              Log Out
+            </button>
+          </div>
+        </div>
+      )}
+
       {showProgress && (
         <div className="mb-8">
           <ProgressIndicator

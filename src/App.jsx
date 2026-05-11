@@ -1,8 +1,7 @@
-import { useCallback, useMemo } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from '@/context/AppContext';
-import { useNavigation } from '@/context/NavigationContext';
 import { useSession } from '@/context/SessionContext';
+import { getSession } from '@/services/SessionService';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import WelcomeScreen from '@/pages/WelcomeScreen';
 import LoginScreen from '@/pages/LoginScreen';
@@ -50,7 +49,11 @@ function VerifiedRoute({ children }) {
     return <Navigate to="/login" replace />;
   }
 
-  if (!isVerified) {
+  // Also check synchronous session state to handle React state batching delays
+  const session = getSession();
+  const sessionVerified = session ? session.isVerified === true : false;
+
+  if (!isVerified && !sessionVerified) {
     return <Navigate to="/verify" replace />;
   }
 
@@ -72,15 +75,46 @@ function TokenValidatedRoute({ children }) {
     return <Navigate to="/login" replace />;
   }
 
-  if (!isVerified) {
+  // Also check synchronous session state to handle React state batching delays
+  const session = getSession();
+  const sessionVerified = session ? session.isVerified === true : false;
+  const sessionTokenValidated = session ? session.isTokenValidated === true : false;
+
+  if (!isVerified && !sessionVerified) {
     return <Navigate to="/verify" replace />;
   }
 
-  if (!isTokenValidated) {
+  if (!isTokenValidated && !sessionTokenValidated) {
     return <Navigate to="/validate-token" replace />;
   }
 
   return children;
+}
+
+/**
+ * Smart router component for the addEditSigner step.
+ * Checks localStorage for scm_edit_signer_id to decide whether to show
+ * the EditSignerScreen or the AddSignerScreen.
+ *
+ * @returns {React.ReactElement}
+ */
+function AddEditSignerRouter() {
+  const editSignerId = (() => {
+    try {
+      const raw = localStorage.getItem('scm_edit_signer_id');
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (typeof parsed === 'string' && parsed.trim() !== '') return parsed;
+      return null;
+    } catch {
+      return null;
+    }
+  })();
+
+  if (editSignerId) {
+    return <EditSignerScreen />;
+  }
+  return <AddSignerScreen />;
 }
 
 /**
@@ -131,7 +165,7 @@ function AppRoutes() {
         path="/add-signer"
         element={
           <TokenValidatedRoute>
-            <AddSignerScreen />
+            <AddEditSignerRouter />
           </TokenValidatedRoute>
         }
       />
@@ -185,11 +219,11 @@ function AppRoutes() {
 function App() {
   return (
     <ErrorBoundary>
-      <AppProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <AppProvider>
           <AppRoutes />
-        </BrowserRouter>
-      </AppProvider>
+        </AppProvider>
+      </BrowserRouter>
     </ErrorBoundary>
   );
 }

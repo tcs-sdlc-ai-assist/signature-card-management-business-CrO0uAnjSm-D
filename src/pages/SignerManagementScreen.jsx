@@ -16,6 +16,7 @@ import { getSigners } from '@/services/SignerService';
 import { canUnlock, canResend } from '@/services/RateLimitService';
 import { logEvent, AUDIT_EVENT_TYPES, AUDIT_OUTCOMES } from '@/services/AuditService';
 import { STATUS } from '@/utils/constants';
+import { setToLocalStorage } from '@/utils/helpers';
 
 /**
  * Number of signers to display per page.
@@ -299,6 +300,7 @@ function SignerManagementScreenContent() {
    * Navigates to the add/edit signer form.
    */
   const handleAddSigner = useCallback(() => {
+    setToLocalStorage('scm_edit_signer_id', null);
     goToStep('addEditSigner');
   }, [goToStep]);
 
@@ -324,7 +326,7 @@ function SignerManagementScreenContent() {
       },
       AUDIT_OUTCOMES.INFO
     );
-
+    setToLocalStorage('scm_edit_signer_id', signer.id);
     goToStep('addEditSigner');
   }, [userId, accountId, goToStep]);
 
@@ -426,6 +428,7 @@ function SignerManagementScreenContent() {
     );
 
     completeStep('signerManagement');
+    completeStep('addEditSigner');
     goToStep('confirmSigners');
   }, [userId, accountId, activeSignerCount, completeStep, goToStep]);
 
