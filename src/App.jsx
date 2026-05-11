@@ -18,7 +18,7 @@ import ErrorScreen from '@/pages/ErrorScreen';
 
 /**
  * Route guard component that checks if the user is authenticated.
- * Redirects to the login page if the user is not authenticated.
+ * Redirects to the login page if the user is not authenticated .
  *
  * @param {Object} props
  * @param {React.ReactNode} props.children - The child components to render if authenticated
